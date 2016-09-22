@@ -14,29 +14,24 @@
 	</bean>
 
 	<bean id="downloadLogger" class="com.kasiarakos.processors.DownloadProcessor"></bean>
+	<bean id="listMaker" class="com.kasiarakos.processors.RecepentListMaker"></bean>
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring"
 		trace="false">
 		<route>
 			<from uri="file:data/in?noop=true" />
-			<camel:choice>
-				<camel:when>
-					<camel:simple>${header.CamelFileName} regex '^.*xml$'</camel:simple>
-					<camel:filter>
-						<camel:xpath>/order[not(@test)]</camel:xpath>
-						<camel:process ref="downloadLogger"></camel:process>
-					</camel:filter>
-					<camel:to uri="file:data/out/xml"></camel:to>
-					<camel:stop />
-				</camel:when>
-				<camel:otherwise>
-					<camel:to uri="file:data/out/txt"></camel:to>
-				</camel:otherwise>
-			</camel:choice>
-			<camel:multicast >
-				<camel:to uri="file:data/out"/>
-				<camel:to uri="file:data/out2"/>
-			</camel:multicast>
+			<camel:filter>
+				<camel:simple>${header.CamelFileName} regex '^.*xml$'</camel:simple>
+
+				<camel:setHeader headerName="customer">
+					<xpath>/order/@customer</xpath>
+				</camel:setHeader>
+				<camel:process ref="listMaker"></camel:process>
+				<recipientList>
+					<header>recipients</header>
+				</recipientList>
+			</camel:filter>
+
 			<camel:to uri="stream:out" />
 		</route>
 	</camelContext>

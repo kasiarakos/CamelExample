@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:camel="http://camel.apache.org/schema/spring"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
@@ -12,16 +12,25 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="downloadLogger" class="com.kasiarakos.processors.DownloadProcessor"></bean>
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring"
 		trace="false">
 		<route>
 			<from uri="file:data/in?noop=true" />
-			<process ref="downloadLogger"></process>
-			<to uri="file:data/out" />
+			<camel:choice>
+				<camel:when>
+					<camel:simple>${header.CamelFileName} regex '^.*xml$'</camel:simple>
+					<camel:to uri="file:data/out/xml"></camel:to>
+				</camel:when>
+				<camel:otherwise>
+					<camel:to uri="file:data/out/txt"></camel:to>
+				</camel:otherwise>
+			</camel:choice>
 		</route>
 	</camelContext>
+
+
 
 </beans>

@@ -22,12 +22,18 @@
 			<camel:choice>
 				<camel:when>
 					<camel:simple>${header.CamelFileName} regex '^.*xml$'</camel:simple>
+					<camel:filter>
+						<camel:xpath>/order[not(@test)]</camel:xpath>
+						<camel:process ref="downloadLogger"></camel:process>
+					</camel:filter>
 					<camel:to uri="file:data/out/xml"></camel:to>
+					<camel:stop />
 				</camel:when>
 				<camel:otherwise>
 					<camel:to uri="file:data/out/txt"></camel:to>
 				</camel:otherwise>
 			</camel:choice>
+			<camel:to uri="stream:out" />
 		</route>
 	</camelContext>
 

@@ -1,3 +1,2 @@
-<kasi>
-	<test>test</test>
-</kasi>
+<?xml version="1.0" encoding="UTF-8"?>
+<order name="motor" amount="1" customer="foo" test="true"/>

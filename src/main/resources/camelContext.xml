@@ -20,6 +20,7 @@
 		trace="false">
 		<route>
 			<from uri="file:data/in?noop=true" />
+			<camel:wireTap uri="stream:out"></camel:wireTap>
 			<camel:filter>
 				<camel:simple>${header.CamelFileName} regex '^.*xml$'</camel:simple>
 
@@ -31,8 +32,6 @@
 					<header>recipients</header>
 				</recipientList>
 			</camel:filter>
-
-			<camel:to uri="stream:out" />
 		</route>
 	</camelContext>
 

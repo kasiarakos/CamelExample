@@ -33,6 +33,10 @@
 					<camel:to uri="file:data/out/txt"></camel:to>
 				</camel:otherwise>
 			</camel:choice>
+			<camel:multicast >
+				<camel:to uri="file:data/out"/>
+				<camel:to uri="file:data/out2"/>
+			</camel:multicast>
 			<camel:to uri="stream:out" />
 		</route>
 	</camelContext>

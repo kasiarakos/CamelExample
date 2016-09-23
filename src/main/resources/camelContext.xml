@@ -23,15 +23,16 @@
 		trace="false">
 
 		<dataFormats>
-			<jaxb id="jaxb" contextPath="com.kasiarakos.beans" />
+			<!-- <camel:jacksonxml id="jackson" unmarshalTypeName="com.kasiarakos.beans.Person"/> -->
+			<json id="jackson" prettyPrint="true" library="Jackson" />
 		</dataFormats>
 
 		<route>
 			<camel:from uri="direct:start" />
-			<camel:marshal ref="jaxb"></camel:marshal>
+			<camel:marshal ref="jackson"></camel:marshal>
 			<camel:multicast>
 				<camel:to uri="stream:out"></camel:to>
-				<camel:to uri="file:data/jaxb?fileName=jaxbFile.xml"></camel:to>
+				<camel:to uri="file:data/json?fileName=jsonFile.xml"></camel:to>
 			</camel:multicast>
 
 		</route>

@@ -2,11 +2,18 @@ package com.kasiarakos.beans;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
+import org.apache.camel.dataformat.bindy.annotation.DataField;
+
 @XmlRootElement
+@CsvRecord(separator = ",", crlf = "UNIX")
 public class Person {
 
+	@DataField(pos = 1)
 	private String name;
+	@DataField(pos = 2)
 	private String surname;
+	@DataField(pos = 3)
 	private String job;
 	
 	public Person() {

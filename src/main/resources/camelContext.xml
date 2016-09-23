@@ -23,16 +23,15 @@
 		trace="false">
 
 		<dataFormats>
-			<!-- <camel:jacksonxml id="jackson" unmarshalTypeName="com.kasiarakos.beans.Person"/> -->
-			<json id="jackson" prettyPrint="true" library="Jackson" />
+			<camel:bindy id="csvFormat" type="Csv" classType="com.kasiarakos.beans.Person"/>
 		</dataFormats>
 
 		<route>
 			<camel:from uri="direct:start" />
-			<camel:marshal ref="jackson"></camel:marshal>
+			<camel:marshal ref="csvFormat"></camel:marshal>
 			<camel:multicast>
 				<camel:to uri="stream:out"></camel:to>
-				<camel:to uri="file:data/json?fileName=jsonFile.xml"></camel:to>
+				<camel:to uri="file:data/csv?fileName=csvFile.csv"></camel:to>
 			</camel:multicast>
 
 		</route>

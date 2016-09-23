@@ -16,6 +16,7 @@
 	<bean id="downloadLogger" class="com.kasiarakos.processors.DownloadProcessor"></bean>
 	<bean id="listMaker" class="com.kasiarakos.processors.RecepentListMaker"></bean>
 	<bean id="htmlBean" class="com.kasiarakos.beans.HtmlBean"></bean>
+	<bean id="aggregationBean" class="com.kasiarakos.processors.MyAggregationStrategy"> </bean>
 
 	<camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring"
 		trace="false">
@@ -24,7 +25,14 @@
 			<camel:transform>
 				<camel:method bean="htmlBean" method="toHtml"></camel:method>
 			</camel:transform>
-			<camel:to uri="stream:out"></camel:to>
+			<camel:pollEnrich strategyRef="aggregationBean" >
+				<camel:simple>file:data/out2?noop=true</camel:simple>
+			</camel:pollEnrich>
+			<camel:multicast>
+				<camel:to uri="stream:out"></camel:to>
+				<camel:to uri="file:enrich"></camel:to>
+			</camel:multicast>
+			
 		</route>
 	</camelContext>
 

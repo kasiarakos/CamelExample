@@ -1,10 +1,17 @@
 package com.kasiarakos.beans;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Person {
 
 	private String name;
 	private String surname;
 	private String job;
+	
+	public Person() {
+		
+	}
 
 	public Person(String name, String surname, String job) {
 		super();

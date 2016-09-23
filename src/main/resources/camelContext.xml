@@ -22,16 +22,16 @@
 	<camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring"
 		trace="false">
 
-		<camel:dataFormats>
-			<camel:xstream id="xStream"></camel:xstream>
-		</camel:dataFormats>
-		
+		<dataFormats>
+			<jaxb id="jaxb" contextPath="com.kasiarakos.beans" />
+		</dataFormats>
+
 		<route>
 			<camel:from uri="direct:start" />
-			<camel:marshal ref="xStream"></camel:marshal>
+			<camel:marshal ref="jaxb"></camel:marshal>
 			<camel:multicast>
 				<camel:to uri="stream:out"></camel:to>
-				<camel:to uri="file:data/xstream?fileName=xstreamFile.xml"></camel:to>
+				<camel:to uri="file:data/jaxb?fileName=jaxbFile.xml"></camel:to>
 			</camel:multicast>
 
 		</route>

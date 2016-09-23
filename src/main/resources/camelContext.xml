@@ -22,19 +22,15 @@
 	<camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring"
 		trace="false">
 
-		<dataFormats>
-			<camel:bindy id="csvFormat" type="Csv" classType="com.kasiarakos.beans.Person"/>
-		</dataFormats>
+
 
 		<route>
 			<camel:from uri="direct:start" />
-			<camel:marshal ref="csvFormat"></camel:marshal>
-			<camel:multicast>
-				<camel:to uri="stream:out"></camel:to>
-				<camel:to uri="file:data/csv?fileName=csvFile.csv"></camel:to>
-			</camel:multicast>
-
+			<camel:to uri="velocity://kasi.vm"></camel:to>
+			<camel:to uri="stream:out"></camel:to>
 		</route>
+
+
 	</camelContext>
 
 

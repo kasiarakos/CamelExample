@@ -63,9 +63,12 @@
 			<artifactId>camel-bindy</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
-
-
-
+		<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-velocity -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-velocity</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-core -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>

@@ -15,23 +15,16 @@
 
 	<bean id="downloadLogger" class="com.kasiarakos.processors.DownloadProcessor"></bean>
 	<bean id="listMaker" class="com.kasiarakos.processors.RecepentListMaker"></bean>
+	<bean id="htmlBean" class="com.kasiarakos.beans.HtmlBean"></bean>
 
-	<camelContext xmlns="http://camel.apache.org/schema/spring"
+	<camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring"
 		trace="false">
 		<route>
-			<from uri="file:data/in?noop=true" />
-			<camel:wireTap uri="stream:out"></camel:wireTap>
-			<camel:filter>
-				<camel:simple>${header.CamelFileName} regex '^.*xml$'</camel:simple>
-
-				<camel:setHeader headerName="customer">
-					<xpath>/order/@customer</xpath>
-				</camel:setHeader>
-				<camel:process ref="listMaker"></camel:process>
-				<recipientList>
-					<header>recipients</header>
-				</recipientList>
-			</camel:filter>
+			<camel:from uri="direct:start" />
+			<camel:transform>
+				<camel:method bean="htmlBean" method="toHtml"></camel:method>
+			</camel:transform>
+			<camel:to uri="stream:out"></camel:to>
 		</route>
 	</camelContext>
 

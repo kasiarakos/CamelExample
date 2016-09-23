@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<com.kasiarakos.beans.Person>
+	<name>Dimitris</name>
+	<surname>Kasiaras</surname>
+	<job>Software Engineer</job>
+</com.kasiarakos.beans.Person>

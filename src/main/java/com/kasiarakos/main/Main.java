@@ -5,6 +5,8 @@ import org.apache.camel.ProducerTemplate;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.kasiarakos.beans.Person;
+
 public class Main {
 	
 	public static void main(String[] args) throws Exception {
@@ -12,7 +14,8 @@ public class Main {
 		
 		CamelContext camelContext = context.getBean(CamelContext.class);
 		ProducerTemplate template = camelContext.createProducerTemplate();
-		template.sendBody("direct:start","Title: Hello World \n kasiarakos test \n This is the end");
+		Person kasiarakos = new Person("Dimitris", "Kasiaras", "Software Engineer");
+		template.sendBody("direct:start",kasiarakos);
 		
 		context.start();
 		Thread.sleep(10000);

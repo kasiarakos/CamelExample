@@ -3,11 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kasiarakos</groupId>
 	<artifactId>CamelExampleKasiarakos</artifactId>
+	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<camel-version>2.17.3</camel-version>
+		<spring-version>4.3.3.RELEASE</spring-version>
 	</properties>
+
+
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-core -->
@@ -69,16 +73,30 @@
 			<artifactId>camel-velocity</artifactId>
 			<version>${camel-version}</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-servlet -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-servlet</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-core -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-core</artifactId>
 			<version>5.7.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
 
 	</dependencies>
 
 	<build>
+		<finalName>CamelExample</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

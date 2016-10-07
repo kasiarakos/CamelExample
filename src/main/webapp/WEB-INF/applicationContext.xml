@@ -1,21 +1,64 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	 http://www.springframework.org/schema/beans/spring-beans.xsd          
 	 http://camel.apache.org/schema/spring 
-	 http://camel.apache.org/schema/spring/camel-spring.xsd">
+	 http://camel.apache.org/schema/spring/camel-spring.xsd
+	 http://www.springframework.org/schema/context 
+	 http://www.springframework.org/schema/context/spring-context.xsd
+	">
 
+	<bean id="exceptionBean" class="com.kasiarakos.beans.ExceptionBean"></bean>
+	<bean id="dao" class="com.kasiarakos.daos.PersonDao"></bean>
 	<bean id="myBean" class="com.kasiarakos.beans.MyBean"></bean>
 	<bean id="secondBean" class="com.kasiarakos.beans.SecondBean"></bean>
+	<bean id="exampleBean" class="com.kasiarakos.spring.transaction.ExampleBean"></bean>
+
+
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:/jboss:/mySql/transaction" />
+	</bean> -->
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/transaction" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+	
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="fundTransferTranManager"
+		class="com.kasiarakos.spring.transaction.SpringTranManagerFundTransferTransaction">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+
+
+<!-- 	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" 
+		/> -->
+
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.kasiarakos"></context:component-scan>
+
 
 	<camelContext xmlns="http://camel.apache.org/schema/spring">
 
 		<route id="helloRoute">
 			<!-- incoming requests from the servlet is routed -->
 			<from uri="servlet://TestServlet" />
-			<camel:setHeader headerName="kasiarakostest" ><simple>4</simple></camel:setHeader>
-			<camel:bean ref="myBean"></camel:bean>
-			<camel:bean ref="secondBean"></camel:bean>
+			<camel:transacted />
+			<camel:setHeader headerName="kasiarakostest">
+				<simple>4</simple>
+			</camel:setHeader>
+			<camel:bean ref="exampleBean"></camel:bean>
+
 			<choice>
 				<when>
 					<!-- is there a header with the key name? -->
